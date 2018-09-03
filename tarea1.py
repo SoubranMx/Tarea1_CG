@@ -11,18 +11,32 @@ def leeArchivo():
 #Una vez cargado todo lineas.txt, podemos dejar de usar el archivo y operar desde acá.
 
 #Puntos = [[None,None],[None,None]]  #P1 = x,x; P2 = y,y
-def anSuperior(Ysup=0,Yi=0,Yf=0,Xi=0,Xf=0):
+def anSuperior(ventana,Yi=0,Yf=0,Xi=0,Xf=0):
     #Usup = (Ysup - Yi)/(Yf-Yi)
+    #ventana[0] = x1
+    #ventana[1] = y1
+    #ventana[2] = x2
+    #ventana[3] = y2
+    Xizq = ventana[0]
+    Xder = ventana[2]
+    Yinf = ventana[1]
+    Ysup = ventana[3]
     Punto = []
     Usup = 0.0
     Usup = (Ysup - Yi)/(Yf - Yi)
+    print(Usup)
     if Usup >= 0 and Usup <= 1:
         Xsup = Xi + Usup*(Xf-Xi)
-        if Xsup >= Xi and Xsup <=Xf:  #Queda dentro del rango Xi <= Xsup <= Xf
-            if Ysup >= Yi and Ysup <=Yf: #Queda dentro del rango Yi <= Ysup <= Yf
+        print(Xsup,Xi,Xf)
+        if Xsup >= Xizq and Xsup <= Xder:  #Queda dentro del rango Xizq <= Xsup <= Xder
+            if Ysup >= Yinf and Ysup <= Ysup: #Queda dentro del rango Yinf <= Ysup <= Ysup
                 Punto = [Xsup,Ysup]
+            else:
+                Punto = [None]
+        else:
+            Punto = [None]
     else:
-        Punto = [None,None]
+        Punto = [None]
     return Punto
 """
 def anInferior():
@@ -38,10 +52,14 @@ def anDerecho():
 def ventanear():
     print ("Valores de ventana:\n")
     ventana = []
-    ventana.append(input("Xizq = "))
-    ventana.append(input("Yinf = "))
-    ventana.append(input("Xder = "))
-    ventana.append(input("Ysup = "))
+    #ventana.append(float(input("Xizq = ")))
+    #ventana.append(float(input("Yinf = ")))
+    #ventana.append(float(input("Xder = ")))
+    #ventana.append(float(input("Ysup = ")))
+    ventana.append(3.0)
+    ventana.append(2.0)
+    ventana.append(8.0)
+    ventana.append(7.0)
     #ventana[0] = input("Xizq = ")
     #ventana[1] = input("Yinf = ")
     #ventana[2] = input("Xder = ")
@@ -55,7 +73,6 @@ def readFile():
         sttr = str(type(texto))
         #print ("Linea 55 type = "+ sttr +" dentro: "+ str(texto)+ "len = " + str(len(texto)))
         for n in texto:
-            #print(n + "\n")
             l = n.split()
             l = [int(i) for i in l]
             lineas.append(l)
@@ -69,11 +86,11 @@ def readFile():
             lineas = [None, None]
     #lineas.append(texto[1].split()) # [7 9 10 6]
     #lineas.append(texto[2].split()) # [5 1 5 8]
-    return lineas
+    return lineas   # [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
 
 #def Main
 def main():
-    p1 = [0,0]
+    p1 = [None,None]
     p2 = [None,None]
     ventana = [None,None,None,None] #(Xiz,Yinf) (Xder,Ysup)
     lineas_c = 0  #maximo 3
@@ -88,7 +105,10 @@ def main():
         x2 = float(lineas[0][2])
         y2 = float(lineas[0][3])
 
-        p1 = anSuperior(ventana[3],y1,y2,x1,x2)
+        print(x1,x2,y1,y2)
+
+        p1 = anSuperior(ventana,y1,y2,x1,x2)
+        print(p1,type(p1))
         if p1 == None:
             print ("La linea 2 no obtuvo punto de recorte en Analisis Superior")
     else:
