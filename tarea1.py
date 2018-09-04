@@ -11,6 +11,19 @@ def leeArchivo():
 #Una vez cargado todo lineas.txt, podemos dejar de usar el archivo y operar desde acá.
 
 #Puntos = [[None,None],[None,None]]  #P1 = x,x; P2 = y,y
+def Analisis(ventana,Yi,Yf,Xi,Xf,no_an):    #no_an: 0=>Superior, 1=>Inferior, 2=>Izquierdo, 3=>Derecho
+    
+    """switch(no_an){
+        case 0: #Superior
+            break;
+        case 1: #Inferior
+            break;
+        case 2: #Izquierdo
+            break;
+        case 3: #Derecho
+            break;
+    }"""
+    retun algo
 def anSuperior(ventana,Yi=0,Yf=0,Xi=0,Xf=0):
     #Usup = (Ysup - Yi)/(Yf-Yi)
     #ventana[0] = x1
@@ -79,11 +92,11 @@ def readFile():
         print(lineas)
     else:
         if len(texto) == 0:  #0 lineas
-            print("Linea 60\n")
+            print("El archivo lineas.txt no contiene lineas a leer")
             lineas = [None]
         else:    #mas de 3 lineas
-            print("Linea 63\n")
-            lineas = [None, None]
+            print("El archivo lineas.txt tiene mas de 3 lineas. Por favor, introduzca hasta 3 lineas")
+            lineas = [None]
     #lineas.append(texto[1].split()) # [7 9 10 6]
     #lineas.append(texto[2].split()) # [5 1 5 8]
     return lineas   # [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
@@ -96,25 +109,23 @@ def main():
     lineas_c = 0  #maximo 3
     ventana = ventanear()
     lineas = readFile()
-
-    lineas_c = len(lineas)
-    if lineas_c > 0 and lineas_c < 4:
-        #codigo
+    if lineas.count(None) != 1: #Que haya entre 1 y 3 lineas
+        lineas_c = len(lineas)
+        #if lineas_c > 0 and lineas_c < 4:
+            #codigo
         x1 = float(lineas[0][0])
         y1 = float(lineas[0][1])
         x2 = float(lineas[0][2])
         y2 = float(lineas[0][3])
-
         print(x1,x2,y1,y2)
-
         p1 = anSuperior(ventana,y1,y2,x1,x2)
         print(p1,type(p1))
-        if p1 == None:
+        if p1.count(None) == 1:
             print ("La linea 2 no obtuvo punto de recorte en Analisis Superior")
-    else:
-        if lineas_c == 0:
-            print ("El archivo lineas.txt no tiene lineas, por favor actualicelo e introduzca de 1 a 3 lineas\n")
-        else:
-            print ("El archivo lineas.txt tiene mas de 3 lineas, este programa solo acepta 3.\n")
+        """else:
+            if lineas_c == 0:
+                print ("El archivo lineas.txt no tiene lineas, por favor actualicelo e introduzca de 1 a 3 lineas\n")
+            else:
+                print ("El archivo lineas.txt tiene mas de 3 lineas, este programa solo acepta 3.\n")"""
 
 main();
