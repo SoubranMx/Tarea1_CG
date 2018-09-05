@@ -87,18 +87,10 @@ def evaluaP(Puntos,ventana):
 def ventanear():
     print ("Valores de ventana:\n")
     ventana = []
-    #ventana.append(float(input("Xizq = ")))
-    #ventana.append(float(input("Yinf = ")))
-    #ventana.append(float(input("Xder = ")))
-    #ventana.append(float(input("Ysup = ")))
-    ventana.append(3.0)
-    ventana.append(2.0)
-    ventana.append(8.0)
-    ventana.append(7.0)
-    #ventana[0] = input("Xizq = ")
-    #ventana[1] = input("Yinf = ")
-    #ventana[2] = input("Xder = ")
-    #ventana[3] = input("Ysup = ")
+    ventana.append(float(input("Xizq = ")))
+    ventana.append(float(input("Yinf = ")))
+    ventana.append(float(input("Xder = ")))
+    ventana.append(float(input("Ysup = ")))
     return ventana
 
 def readFile():
