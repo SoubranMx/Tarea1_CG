@@ -10,57 +10,79 @@ def leeArchivo():
     return texto
 #Una vez cargado todo lineas.txt, podemos dejar de usar el archivo y operar desde acá.
 
-#Puntos = [[None,None],[None,None]]  #P1 = x,x; P2 = y,y
-def Analisis(ventana,Yi,Yf,Xi,Xf,no_an):    #no_an: 0=>Superior, 1=>Inferior, 2=>Izquierdo, 3=>Derecho
-    
-    """switch(no_an){
-        case 0: #Superior
-            break;
-        case 1: #Inferior
-            break;
-        case 2: #Izquierdo
-            break;
-        case 3: #Derecho
-            break;
-    }"""
-    retun algo
-def anSuperior(ventana,Yi=0,Yf=0,Xi=0,Xf=0):
-    #Usup = (Ysup - Yi)/(Yf-Yi)
-    #ventana[0] = x1
-    #ventana[1] = y1
-    #ventana[2] = x2
-    #ventana[3] = y2
+def Analisis(ventana,Yi,Yf,Xi,Xf,no_an):
+    #no_an: 0=>Superior, 1=>Inferior, 2=>Izquierdo, 3=>Derecho
+    #Yi,Yf,Xi,Xf dependen de los valores de las lineas que vienen en listas
+    #ventana contiene los valores de la ventana, que limitan superior,inferior,izquierdo y derecho
     Xizq = ventana[0]
     Xder = ventana[2]
     Yinf = ventana[1]
     Ysup = ventana[3]
-    Punto = []
-    Usup = 0.0
-    Usup = (Ysup - Yi)/(Yf - Yi)
-    print(Usup)
-    if Usup >= 0 and Usup <= 1:
-        Xsup = Xi + Usup*(Xf-Xi)
-        print(Xsup,Xi,Xf)
-        if Xsup >= Xizq and Xsup <= Xder:  #Queda dentro del rango Xizq <= Xsup <= Xder
-            if Ysup >= Yinf and Ysup <= Ysup: #Queda dentro del rango Yinf <= Ysup <= Ysup
-                Punto = [Xsup,Ysup]
+
+    dx = Xf - Xi
+    dy = Yf - Yi
+
+    Punto = [None]
+
+    if no_an == 0:
+        if dy != 0:
+            Ux = (Ysup-Yi)/(dy)
+            if evaluaU(Ux) == True:
+                Xsi = Xi + Ux*(dx)
+                Punto = evaluaP([Xsi,Ysup],ventana)
             else:
                 Punto = [None]
         else:
             Punto = [None]
+    elif no_an == 1:
+        if dy != 0:
+            Ux = (Yinf-Yi)/(dy)
+            if evaluaU(Ux) == True:
+                Xsi = Xi + Ux*(dx)
+                Punto = evaluaP([Xsi,Yinf],ventana)
+            #Este else tal vez no es necesario
+            else:
+                Punto = [None]
+        else:
+            Punto = [None]
+    elif no_an == 2:
+        if dx != 0:
+            Uy = (Xizq-Xi)/(dx)
+            if evaluaU(Uy) == True:
+                Yid = Yi + Uy*(dy)
+                Punto = evaluaP([Xizq,Yid],ventana)
+            else:
+                Punto = [None]
+        else:
+            Punto = [None]
+    elif no_an == 3:
+        if dx != 0:
+            Uy = (Xder-Xi)/(dx)
+            if evaluaU(Uy) == True:
+                Yid = Yi + Uy*(dy)
+                Punto = evaluaP([Xder,Yid],ventana)
+            else:
+                Punto = [None]
+        else:
+            Punto = [None]
+    return Punto #debiera regresar P=[Xizq/der/sup/inf , Yizq/der/sup/inf] o P=[none]
+
+def evaluaU(U):
+    bulean = False
+    if U >= 0 and U <= 1:
+        bulean = True
+    else:
+        bulean =False
+    return bulean
+
+def evaluaP(Puntos,ventana):
+    Punto = [None]
+    if Puntos[0] >= ventana[0] and Puntos[0] <= ventana[2] and Puntos[1] >= ventana[1] and Puntos[1] <= ventana[3]:
+        #Xi <= X <= Xf  and Yi <= Y <= Yf
+        Punto = Puntos
     else:
         Punto = [None]
     return Punto
-"""
-def anInferior():
-    return Punto
-
-def anIzquierdo():
-    return Punto
-
-def anDerecho():
-    return Punto
-"""
 
 def ventanear():
     print ("Valores de ventana:\n")
@@ -89,7 +111,7 @@ def readFile():
             l = n.split()
             l = [int(i) for i in l]
             lineas.append(l)
-        print(lineas)
+        #print(lineas)
     else:
         if len(texto) == 0:  #0 lineas
             print("El archivo lineas.txt no contiene lineas a leer")
@@ -103,9 +125,10 @@ def readFile():
 
 #def Main
 def main():
-    p1 = [None,None]
-    p2 = [None,None]
-    ventana = [None,None,None,None] #(Xiz,Yinf) (Xder,Ysup)
+    p = []
+    Punto = []
+    texto = ["Superior","Inferior","Izquierdo", "Derecho"]
+    ventana = [] #(Xiz,Yinf) (Xder,Ysup)
     lineas_c = 0  #maximo 3
     ventana = ventanear()
     lineas = readFile()
@@ -113,19 +136,30 @@ def main():
         lineas_c = len(lineas)
         #if lineas_c > 0 and lineas_c < 4:
             #codigo
-        x1 = float(lineas[0][0])
-        y1 = float(lineas[0][1])
-        x2 = float(lineas[0][2])
-        y2 = float(lineas[0][3])
-        print(x1,x2,y1,y2)
-        p1 = anSuperior(ventana,y1,y2,x1,x2)
-        print(p1,type(p1))
-        if p1.count(None) == 1:
-            print ("La linea 2 no obtuvo punto de recorte en Analisis Superior")
-        """else:
-            if lineas_c == 0:
-                print ("El archivo lineas.txt no tiene lineas, por favor actualicelo e introduzca de 1 a 3 lineas\n")
-            else:
-                print ("El archivo lineas.txt tiene mas de 3 lineas, este programa solo acepta 3.\n")"""
+        for i in range(0,lineas_c):
+            print ("Linea %d :" % (i+1))
+            x1 = float(lineas[i][0])
+            x2 = float(lineas[i][2])
+            y1 = float(lineas[i][1])
+            y2 = float(lineas[i][3])
+            #print(x1,x2,y1,y2)
+            for i in range(0,4):
+                print("\tAnalisis %s\t:  "%(texto[i]),end='')
+                p = Analisis(ventana,y1,y2,x1,x2,i)
+                if p.count(None) == 0 and Punto.count(p) == 0:
+                    Punto.append(p)
+                    print("Punto de recorte en (%2.2f,%2.2f)"%(p[0],p[1]))    #Punto de recorte en (X,Y)
+                elif Punto.count(p) != 0:
+                    print("Punto de recorte en (%2.2f,%2.2f)"%(p[0],p[1]))
+                else:
+                    print("No tiene punto de recorte")
 
+            print("")
+            if Punto.count(None) == 0:
+                j=len(Punto)
+                for i in range(0,j):
+                    print("\tPunto P%d = (%2.2f,%2.2f)"%(i+1,Punto[0][0],Punto[0][1]))
+                    x = Punto.pop(0)
+            print("")
+    return
 main();
